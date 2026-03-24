@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Starosta Messenger</string>
+    <string name="login_title">Добро пожаловать</string>
+    <string name="login_subtitle">Войдите в ваш аккаунт</string>
+    <string name="register_title">Создать аккаунт</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Пароль</string>
+    <string name="name_hint">Имя</string>
+    <string name="login_button">Войти</string>
+    <string name="register_button">Зарегистрироваться</string>
+    <string name="google_signin">Войти через Google</string>
+    <string name="phone_auth">Войти через телефон</string>
+    <string name="chats_tab">Чаты</string>
+    <string name="contacts_tab">Контакты</string>
+    <string name="profile_tab">Профиль</string>
+</resources>
