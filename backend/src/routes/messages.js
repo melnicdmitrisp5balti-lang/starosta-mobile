@@ -5,7 +5,7 @@ const { authenticate } = require('../middleware/auth');
 const { body, query, validationResult } = require('express-validator');
 const { sendPushNotification } = require('../utils/notifications');
 
-const prisma = new PrismaClient();
+const { prisma } = require('../middleware/auth');
 
 // Get messages in a chat
 router.get('/:chatId', authenticate,

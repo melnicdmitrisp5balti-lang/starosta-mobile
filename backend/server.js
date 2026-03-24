@@ -1,9 +1,8 @@
 require('dotenv').config();
 const { server } = require('./src/app');
-const { PrismaClient } = require('@prisma/client');
+const { prisma } = require('./src/middleware/auth');
 const logger = require('./src/utils/logger');
 
-const prisma = new PrismaClient();
 const PORT = process.env.PORT || 3000;
 
 async function main() {

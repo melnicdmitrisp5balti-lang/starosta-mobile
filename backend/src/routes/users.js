@@ -4,7 +4,7 @@ const { PrismaClient } = require('@prisma/client');
 const { authenticate } = require('../middleware/auth');
 const { body, query, validationResult } = require('express-validator');
 
-const prisma = new PrismaClient();
+const { prisma } = require('../middleware/auth');
 
 // Get current user profile
 router.get('/me', authenticate, async (req, res, next) => {

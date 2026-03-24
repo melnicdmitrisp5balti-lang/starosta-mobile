@@ -1,7 +1,14 @@
 const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
+const { PrismaPg } = require('@prisma/adapter-pg');
+const { Pool } = require('pg');
 
-const prisma = new PrismaClient();
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 const authenticate = async (req, res, next) => {
   try {
@@ -21,8 +28,6 @@ const authenticate = async (req, res, next) => {
         username: true,
         name: true,
         avatarUrl: true,
-        isOnline: true,
-        isVerified: true,
       },
     });
 
@@ -64,4 +69,4 @@ const optionalAuth = async (req, res, next) => {
   }
 };
 
-module.exports = { authenticate, optionalAuth };
+module.exports = { authenticate, optionalAuth, prisma };

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { chatAPI, messageAPI } from '../api/api';
-import { socket, joinRoom, leaveRoom } from '../api/socket';
+import { getSocket, joinRoom, leaveRoom } from '../api/socket';
 
 const useChatStore = create((set, get) => ({
   chats: [],
@@ -45,8 +45,9 @@ const useChatStore = create((set, get) => ({
 
   sendMessage: async (chatId, content, type = 'text') => {
     try {
+      const socket = getSocket();
+      if (socket) socket.emit('send_message', { chatId, content, type });
       const payload = { content, type };
-      socket.emit('send_message', { chatId, ...payload });
       const response = await messageAPI.sendMessage(chatId, payload);
       const msg = response.data;
       set((state) => ({
@@ -159,6 +160,9 @@ const useChatStore = create((set, get) => ({
   },
 
   setupSocketListeners: () => {
+    const socket = getSocket();
+    if (!socket) return;
+
     socket.on('new_message', (msg) => {
       get().addMessage(msg);
     });

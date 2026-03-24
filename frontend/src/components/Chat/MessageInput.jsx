@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import useChatStore from '../../store/chatStore';
-import { socket } from '../../api/socket';
+import { getSocket } from '../../api/socket';
 import { fileAPI } from '../../api/api';
 
 const EMOJIS = ['😀', '😂', '❤️', '👍', '👎', '🎉', '🔥', '😮', '😢', '🤔', '👋', '✅'];
@@ -17,7 +17,8 @@ export default function MessageInput({ chatId }) {
   const isTypingRef = useRef(false);
 
   const emitTypingStop = useCallback(() => {
-    if (isTypingRef.current) {
+    const socket = getSocket();
+    if (socket && isTypingRef.current) {
       socket.emit('typing_stop', { chatId });
       isTypingRef.current = false;
     }
@@ -31,7 +32,8 @@ export default function MessageInput({ chatId }) {
       el.style.height = Math.min(el.scrollHeight, 120) + 'px';
     }
 
-    if (!isTypingRef.current) {
+    const socket = getSocket();
+    if (!isTypingRef.current && socket) {
       socket.emit('typing_start', { chatId });
       isTypingRef.current = true;
     }

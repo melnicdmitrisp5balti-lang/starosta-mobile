@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  username      String    @unique
+  avatarUrl     String?
+  bio           String?
+  status        String    @default("offline")
+  isOnline      Boolean   @default(false)
+  lastSeen      DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  chats         Chat[]
+  messages      Message[]
+  contacts      User[]    @relation("UserContacts")
+  contactedBy   User[]    @relation("UserContacts")
+  refreshTokens RefreshToken[]
+}
+
+model Chat {
+  id        String    @id @default(cuid())
+  name      String?
+  type      String    @default("dm")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  users     User[]
+  messages  Message[]
+}
+
+model Message {
+  id        String    @id @default(cuid())
+  content   String
+  chatId    String
+  userId    String
+  status    String    @default("sent")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  chat      Chat      @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
