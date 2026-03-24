@@ -163,15 +163,15 @@ const useChatStore = create((set, get) => ({
     const socket = getSocket();
     if (!socket) return;
 
-    socket.on('new_message', (msg) => {
+    socket.off('new_message').on('new_message', (msg) => {
       get().addMessage(msg);
     });
 
-    socket.on('message_updated', (msg) => {
+    socket.off('message_updated').on('message_updated', (msg) => {
       get().updateMessage(msg);
     });
 
-    socket.on('message_deleted', ({ messageId, chatId }) => {
+    socket.off('message_deleted').on('message_deleted', ({ messageId, chatId }) => {
       set((state) => ({
         messages: {
           ...state.messages,
@@ -182,15 +182,15 @@ const useChatStore = create((set, get) => ({
       }));
     });
 
-    socket.on('typing_start', ({ chatId, userId }) => {
+    socket.off('typing_start').on('typing_start', ({ chatId, userId }) => {
       get().setTyping(chatId, userId, true);
     });
 
-    socket.on('typing_stop', ({ chatId, userId }) => {
+    socket.off('typing_stop').on('typing_stop', ({ chatId, userId }) => {
       get().setTyping(chatId, userId, false);
     });
 
-    socket.on('user_online', ({ userId }) => {
+    socket.off('user_online').on('user_online', ({ userId }) => {
       set((state) => ({
         chats: state.chats.map((c) =>
           c.participants?.some((p) => (p._id || p.id) === userId)
@@ -200,7 +200,7 @@ const useChatStore = create((set, get) => ({
       }));
     });
 
-    socket.on('user_offline', ({ userId }) => {
+    socket.off('user_offline').on('user_offline', ({ userId }) => {
       set((state) => ({
         chats: state.chats.map((c) => ({
           ...c,

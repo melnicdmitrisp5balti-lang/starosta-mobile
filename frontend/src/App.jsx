@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import useAuthStore from './store/authStore';
-import useChatStore from './store/chatStore';
 import Home from './pages/Home';
 import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
@@ -37,7 +36,6 @@ function AppLayout({ children }) {
 
 function AppRoutes() {
   const { checkAuth } = useAuthStore();
-  const { setupSocketListeners } = useChatStore();
 
   useEffect(() => {
     const theme = localStorage.getItem('theme');
@@ -48,8 +46,7 @@ function AppRoutes() {
     }
 
     checkAuth();
-    setupSocketListeners();
-  }, [checkAuth, setupSocketListeners]);
+  }, [checkAuth]);
 
   return (
     <Routes>
