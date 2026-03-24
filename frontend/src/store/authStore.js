@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { authAPI, userAPI } from '../api/api';
 import { connectSocket, disconnectSocket } from '../api/socket';
+import useChatStore from './chatStore';
 
 const useAuthStore = create((set, get) => ({
   user: null,
@@ -16,6 +17,7 @@ const useAuthStore = create((set, get) => ({
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       connectSocket(token);
+      useChatStore.getState().setupSocketListeners();
       set({ user, token, isAuthenticated: true, isLoading: false });
       return { success: true };
     } catch (error) {
@@ -35,6 +37,7 @@ const useAuthStore = create((set, get) => ({
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       connectSocket(token);
+      useChatStore.getState().setupSocketListeners();
       set({ user, token, isAuthenticated: true, isLoading: false });
       return { success: true };
     } catch (error) {
@@ -68,6 +71,7 @@ const useAuthStore = create((set, get) => ({
       const user = response.data;
       localStorage.setItem('user', JSON.stringify(user));
       connectSocket(token);
+      useChatStore.getState().setupSocketListeners();
       set({ user, token, isAuthenticated: true });
     } catch {
       localStorage.removeItem('token');
