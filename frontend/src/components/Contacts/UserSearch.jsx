@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../../store/userStore';
 import useChatStore from '../../store/chatStore';
@@ -29,6 +29,14 @@ export default function UserSearch() {
   const { user: currentUser } = useAuthStore();
   const navigate = useNavigate();
   const debounceRef = useRef(null);
+  const blurTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(debounceRef.current);
+      clearTimeout(blurTimeoutRef.current);
+    };
+  }, []);
 
   const handleSearch = useCallback(
     (e) => {
@@ -75,7 +83,7 @@ export default function UserSearch() {
           value={query}
           onChange={handleSearch}
           onFocus={() => setIsOpen(true)}
-          onBlur={() => setTimeout(() => setIsOpen(false), 150)}
+          onBlur={() => { blurTimeoutRef.current = setTimeout(() => setIsOpen(false), 150); }}
           placeholder="Search people by name or username..."
           className="w-full pl-9 pr-3 py-2 text-sm rounded-xl bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2AABEE] border-0"
         />

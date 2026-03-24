@@ -4,6 +4,7 @@ import { socket } from '../../api/socket';
 import { fileAPI } from '../../api/api';
 
 const EMOJIS = ['😀', '😂', '❤️', '👍', '👎', '🎉', '🔥', '😮', '😢', '🤔', '👋', '✅'];
+const TYPING_TIMEOUT_MS = 1500;
 
 export default function MessageInput({ chatId }) {
   const [content, setContent] = useState('');
@@ -35,7 +36,7 @@ export default function MessageInput({ chatId }) {
       isTypingRef.current = true;
     }
     clearTimeout(typingTimeoutRef.current);
-    typingTimeoutRef.current = setTimeout(emitTypingStop, 1500);
+    typingTimeoutRef.current = setTimeout(emitTypingStop, TYPING_TIMEOUT_MS);
   };
 
   const handleSend = async () => {

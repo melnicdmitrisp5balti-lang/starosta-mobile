@@ -15,6 +15,12 @@ backend/logs/
 backend/dist/
 *.log
 
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env
+
 # General
 .DS_Store
 *.iml

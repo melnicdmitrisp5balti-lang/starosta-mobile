@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import useAuthStore from '../../store/authStore';
 import { userAPI } from '../../api/api';
 
@@ -15,6 +15,11 @@ export default function EditProfile({ onClose }) {
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
+  const successTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => { clearTimeout(successTimeoutRef.current); };
+  }, []);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -45,7 +50,7 @@ export default function EditProfile({ onClose }) {
       const result = await updateProfile({ ...form, avatar: avatarUrl });
       if (result.success) {
         setSuccess(true);
-        setTimeout(() => { setSuccess(false); if (onClose) onClose(); }, 1000);
+        successTimeoutRef.current = setTimeout(() => { setSuccess(false); if (onClose) onClose(); }, 1000);
       } else {
         setError(result.error);
       }
