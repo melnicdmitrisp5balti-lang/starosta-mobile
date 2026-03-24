@@ -1,0 +1,42 @@
+/* Additional global styles for the messenger app */
+
+/* Message bubble animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-enter {
+  animation: fadeInUp 0.15s ease-out;
+}
+
+/* Typing indicator dots */
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-4px); }
+}
+
+.typing-dot:nth-child(1) { animation: typingDot 1.2s infinite 0s; }
+.typing-dot:nth-child(2) { animation: typingDot 1.2s infinite 0.2s; }
+.typing-dot:nth-child(3) { animation: typingDot 1.2s infinite 0.4s; }
+
+/* Custom scrollbar for chat */
+.chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+.dark .chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
